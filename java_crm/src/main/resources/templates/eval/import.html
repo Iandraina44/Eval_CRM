@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="~{/general/head.html}"></div>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dataTables.bootstrap4.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/responsive.dataTables.min.css}">
+    <link th:href="@{/css/style.min.css}" rel="stylesheet">
+</head>
+
+<body class="skin-blue fixed-layout">
+<div class="preloader">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">CRM</p>
+    </div>
+</div>
+
+<div id="main-wrapper">
+    <div th:insert="~{/general/header.html}"></div>
+    <div th:insert="~{/general/left-sidebar.html}"></div>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div th:insert="~{/general/page-titles.html}"></div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Importation des Tickets de Dépenses</h4>
+
+                            <!-- Message de succès ou d'erreur -->
+                            <div th:if="${message != null}" class="alert alert-info">
+                                <span th:text="${message}"></span>
+                            </div>
+
+                            <!-- Formulaire d'importation -->
+                            <form th:action="@{/import/importTicketDepense}" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="file">Sélectionner un fichier CSV :</label>
+                                    <input type="file" id="file" name="file" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Importer</button>
+                            </form>
+
+                            <hr>
+
+                            <h5 th:if="${errorMessage != null}" th:text="${errorMessage}"></h5>
+                            
+                            <!-- Affichage des tickets importés -->
+                            <h5 th:if="${ticketDepense != null and !ticketDepense.isEmpty()}">Résultats de l'import :</h5>
+                            <table th:if="${ticketDepense != null and !ticketDepense.isEmpty()}" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Description</th>
+                                        <th>Montant</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="ticketdep : ${ticketDepense}">
+                                        <td th:text="${ticketdep.ticket.subject}"></td>
+                                        <td th:text="${ticketdep.ticket.description}"></td>
+                                        <td th:text="${ticketdep.depense.valeurDepense}"></td>
+                                        <td th:text="${ticketdep.ticket.createdAt}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:insert="~{/general/footer.html}"></div>
+</div>
+
+<script th:src="@{/js/library/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/js/library/bootstrap.min.js}"></script>
+<script th:src="@{/js/library/custom.min.js}"></script>
+</body>
+</html>

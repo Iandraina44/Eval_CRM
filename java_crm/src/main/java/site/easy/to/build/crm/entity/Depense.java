@@ -17,15 +17,15 @@ public class Depense {
     private LocalDateTime dateDepense;
 
     @Column(name = "etat", nullable = false)
-    private int etat;
+    private Integer etat;
 
     @ManyToOne
     @JoinColumn(name = "lead_id")
-    private int lead;
+    private Lead lead;
 
     @ManyToOne
     @JoinColumn(name = "ticket_id")
-    private int ticket;
+    private Ticket ticket;
 
     public Integer getDepenseId() {
         return depenseId;
@@ -51,27 +51,27 @@ public class Depense {
         this.dateDepense = dateDepense;
     }
 
-    public int getEtat() {
+    public Integer getEtat() {
         return etat;
     }
 
-    public void setEtat(int etat) {
+    public void setEtat(Integer etat) {
         this.etat = etat;
     }
 
-    public int getLead() {
+    public Lead getLead() {
         return lead;
     }
 
-    public void setLead(int lead) {
+    public void setLead(Lead lead) {
         this.lead = lead;
     }
 
-    public int getTicket() {
+    public Ticket getTicket() {
         return ticket;
     }
 
-    public void setTicket(int ticket) {
+    public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
 

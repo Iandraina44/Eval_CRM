@@ -5,7 +5,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import site.easy.to.build.crm.entity.Depense;
 import site.easy.to.build.crm.entity.Notification;
+import site.easy.to.build.crm.service.depense.DepenseService;
 import site.easy.to.build.crm.service.notification.NotificationService;
 import site.easy.to.build.crm.util.AuthenticationUtils;
 
@@ -17,12 +19,15 @@ public class NotificationController {
 
     private final NotificationService notificationService;
     private final AuthenticationUtils authenticationUtils;
-
+    private final DepenseService depenseService;
     @Autowired
-    public NotificationController(NotificationService notificationService, AuthenticationUtils authenticationUtils) {
+    public NotificationController(NotificationService notificationService, AuthenticationUtils authenticationUtils, DepenseService depenseService) {
         this.notificationService = notificationService;
         this.authenticationUtils = authenticationUtils;
+        this.depenseService = depenseService;
     }
+
+
 
     // 🔹 Récupérer toutes les notifications de l'utilisateur connecté, triées par date (du plus récent au plus ancien)
     @GetMapping("/notif")
@@ -45,6 +50,13 @@ public class NotificationController {
 
         // Mettre à jour l'état de la notification
         notificationService.updateNotificationEtat(notificationId, newEtat);
+        Notification notification = notificationService.findByNotificationId(notificationId);
+        Depense depense = depenseService.getDepenseById(notification.getIdDepense()).get();
+        if(depense!= null){
+            depense.setEtat(newEtat);
+            depenseService.saveDepense(depense);
+        }
+
 
         return "redirect:/notifications/notif"; // Rediriger vers la liste des notifications
     }

@@ -176,14 +176,14 @@ public class TicketController {
         ticket.setManager(manager);
         ticket.setEmployee(employee);
         ticket.setCreatedAt(LocalDateTime.now());
-        Notification notif= budgetService.checkBudget(customerId,depense); 
+        Notification notif= budgetService.checkBudget(customerId,depense);
         Depense depenseToInsert= new Depense();
         depenseToInsert.setDateDepense(notif.getDateNotification());
         depenseToInsert.setEtat(notif.getEtat());
         depenseToInsert.setTicket(ticket);
-        depenseToInsert.setValeurDepense(depense);    
+        depenseToInsert.setValeurDepense(depense);
         ticketService.save(ticket);
-        depenseService.saveDepense(depenseToInsert);
+        Depense depense1= depenseService.saveDepense(depenseToInsert);
         // if (depenseToInsert.getEtat()==0) {
         //     List<User> employees = new ArrayList<>();
         //     List<Customer> customers;
@@ -201,11 +201,12 @@ public class TicketController {
         //     model.addAttribute("notification", notif);
         //     model.addAttribute("ticket", ticket);
         //     return "ticket/create-ticket";
-            
+
         // }
         notif.setEtat(0);
+        notif.setIdDepense(depense1.getDepenseId());
         if (!notif.getMessage().equals("successful")){
-            notificationService.save(notif);    
+            notificationService.save(notif);
         }
         return "redirect:/employee/ticket/assigned-tickets";
     }
@@ -325,7 +326,7 @@ public class TicketController {
         List<String> properties = DatabaseUtil.getColumnNames(entityManager, Ticket.class);
         Map<String, Pair<String,String>> changes = LogEntityChanges.trackChanges(originalTicket,currentTicket,properties);
         boolean isGoogleUser = !(authentication instanceof UsernamePasswordAuthenticationToken);
-          
+
         if(isGoogleUser && googleGmailApiService != null) {
             OAuthUser oAuthUser = authenticationUtils.getOAuthUserFromAuthentication(authentication);
             if(oAuthUser.getGrantedScopes().contains(GoogleAccessService.SCOPE_GMAIL)) {

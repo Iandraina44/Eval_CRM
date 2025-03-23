@@ -25,17 +25,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-small-cap">--- Seuil</li>
-                <li>
-                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)">
-                        <i class="fas fa-envelope"></i>
-                        <span class="hide-menu">seuil</span>
-                    </a>
-                    <ul class="collapse">
-                        <li><a th:if="${#authorization.expression('hasRole(''ROLE_MANAGER'')')}" th:href="${home + 'employee/seuils/showSeuilActual'}">All Seuil</a></li>
-                        <li><a th:href="${home + 'employee/seuils/create'}">Create Seuil</a></li>
-                    </ul>
-                </li>
                 <li class="nav-small-cap">--- Settings</li>
                 <li>
                     <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)">
@@ -60,6 +49,18 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-small-cap">--- Seuil</li>
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)">
+                        <i class="fas fa-envelope"></i>
+                        <span class="hide-menu">seuil</span>
+                    </a>
+                    <ul class="collapse">
+                        <li><a th:if="${#authorization.expression('hasRole(''ROLE_MANAGER'')')}" th:href="${home + 'employee/seuils/showSeuilActual'}">All Seuil</a></li>
+                        <li><a th:href="${home + 'employee/seuils/create'}">Create Seuil</a></li>
+                    </ul>
+                </li>
+                
                 <li class="nav-small-cap">--- Google Services</li>
                 <li>
                     <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)">
@@ -224,6 +225,26 @@
                     <a class="waves-effect waves-dark" th:href="${home + 'customer/my-contracts'}">
                         <i class="fas fa-file-contract"></i>
                         <span class="hide-menu">My Contracts</span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">--- Budget</li>
+                <li>
+                    <a class="waves-effect waves-dark" th:href="${home + 'budgets/customerBudget'}">
+                        <i class="fas fa-file-contract"></i>
+                        <span class="hide-menu">My budget</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="waves-effect waves-dark" th:href="${home + 'budgets/create'}">
+                        <i class="fas fa-file-contract"></i>
+                        <span class="hide-menu">Create budget</span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">--- Notification</li>
+                <li>
+                    <a class="waves-effect waves-dark" th:href="${home + 'notifications/notif'}">
+                        <i class="fas fa-file-contract"></i>
+                        <span class="hide-menu">My notification</span>
                     </a>
                 </li>
             </ul>

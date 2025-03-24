@@ -45,8 +45,8 @@ SELECT
     c.customer_id,
     c.name AS customer_name,
     COALESCE(SUM(b.valeur), 0) AS total_budget,
-    COALESCE(d.total_depense, 0) AS total_depense,
-    (COALESCE(SUM(b.valeur), 0) - COALESCE(d.total_depense, 0)) AS budget_restant
+    COALESCE(SUM(d.total_depense), 0) AS total_depense,
+    (COALESCE(SUM(b.valeur), 0) - COALESCE(SUM(d.total_depense), 0)) AS budget_restant
 FROM customer c
 LEFT JOIN budget b ON c.customer_id = b.customer_id
 LEFT JOIN (
@@ -63,3 +63,4 @@ LEFT JOIN (
     GROUP BY customer_id
 ) d ON c.customer_id = d.customer_id
 GROUP BY c.customer_id, c.name;
+

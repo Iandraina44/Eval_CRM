@@ -45,22 +45,22 @@ SELECT
     c.customer_id,
     c.name AS customer_name,
     COALESCE(SUM(b.valeur), 0) AS total_budget,
-    COALESCE(SUM(d.total_depense), 0) AS total_depense,
-    (COALESCE(SUM(b.valeur), 0) - COALESCE(SUM(d.total_depense), 0)) AS budget_restant
+    COALESCE(d.total_depense_ticket, 0) AS total_depense_ticket,
+    COALESCE(d.total_depense_lead, 0) AS total_depense_lead,
+    COALESCE(d.total_depense_ticket, 0) + COALESCE(d.total_depense_lead, 0) AS total_depense,
+    (COALESCE(SUM(b.valeur), 0) - (COALESCE(d.total_depense_ticket, 0) + COALESCE(d.total_depense_lead, 0))) AS budget_restant
 FROM customer c
 LEFT JOIN budget b ON c.customer_id = b.customer_id
 LEFT JOIN (
-    -- Pré-agrégation des dépenses par customer_id
+    -- Pré-agrégation des dépenses séparées par tickets et leads
     SELECT 
-        CASE 
-            WHEN t.customer_id IS NOT NULL THEN t.customer_id 
-            ELSE l.customer_id 
-        END AS customer_id,
-        SUM(d.valeur_depense) AS total_depense
+        COALESCE(t.customer_id, l.customer_id) AS customer_id,
+        SUM(CASE WHEN t.customer_id IS NOT NULL THEN d.valeur_depense ELSE 0 END) AS total_depense_ticket,
+        SUM(CASE WHEN l.customer_id IS NOT NULL THEN d.valeur_depense ELSE 0 END) AS total_depense_lead
     FROM depense d
     LEFT JOIN trigger_ticket t ON d.ticket_id = t.ticket_id
     LEFT JOIN trigger_lead l ON d.lead_id = l.lead_id
-    GROUP BY customer_id
+    GROUP BY COALESCE(t.customer_id, l.customer_id)
 ) d ON c.customer_id = d.customer_id
-GROUP BY c.customer_id, c.name;
+GROUP BY c.customer_id, c.name, d.total_depense_ticket, d.total_depense_lead;
 

@@ -64,3 +64,54 @@ LEFT JOIN (
 ) d ON c.customer_id = d.customer_id
 GROUP BY c.customer_id, c.name, d.total_depense_ticket, d.total_depense_lead;
 
+CREATE VIEW v_lead_depense AS
+SELECT 
+    l.lead_id,
+    l.customer_id,
+    l.user_id,
+    l.name,
+    l.phone,
+    l.employee_id,
+    l.status,
+    l.meeting_id,
+    l.google_drive,
+    l.google_drive_folder_id,
+    l.created_at AS lead_created_at,
+    d.depense_id,
+    d.valeur_depense,
+    d.date_depense,
+    d.etat,
+    d.ticket_id
+FROM trigger_lead l
+LEFT JOIN depense d ON l.lead_id = d.lead_id;
+
+CREATE VIEW v_ticket_depense AS
+SELECT 
+    t.ticket_id,
+    t.subject,
+    t.description,
+    t.status,
+    t.priority,
+    t.customer_id,
+    t.manager_id,
+    t.employee_id,
+    t.created_at,
+    d.depense_id,
+    d.valeur_depense,
+    d.date_depense,
+    d.etat,
+    d.lead_id
+FROM trigger_ticket t
+LEFT JOIN depense d ON t.ticket_id = d.ticket_id;
+
+
+CREATE VIEW v_depense_stat AS
+SELECT 
+    COALESCE(SUM(CASE WHEN lead_id IS NOT NULL THEN valeur_depense END), 0) AS total_lead_depense,
+    COALESCE(SUM(CASE WHEN ticket_id IS NOT NULL THEN valeur_depense END), 0) AS total_ticket_depense,
+    COALESCE(SUM(valeur_depense), 0) AS total_depense,
+    ROUND((COALESCE(SUM(CASE WHEN lead_id IS NOT NULL THEN valeur_depense END), 0) / 
+           COALESCE(SUM(valeur_depense), 1)) * 100, 2) AS pourcentage_lead,
+    ROUND((COALESCE(SUM(CASE WHEN ticket_id IS NOT NULL THEN valeur_depense END), 0) / 
+           COALESCE(SUM(valeur_depense), 1)) * 100, 2) AS pourcentage_ticket
+FROM depense;

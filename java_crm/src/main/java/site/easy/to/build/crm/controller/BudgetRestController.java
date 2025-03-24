@@ -3,8 +3,11 @@ package site.easy.to.build.crm.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.easy.to.build.crm.entity.Budget;
+import site.easy.to.build.crm.entity.DashboardEntity;
+import site.easy.to.build.crm.entity.DepenseStat;
 import site.easy.to.build.crm.entity.StatistiqueBudget;
 import site.easy.to.build.crm.service.budget.BudgetService;
+import site.easy.to.build.crm.service.statistique.DepenseStatService;
 import site.easy.to.build.crm.service.statistique.StatistiqueBudgetService;
 
 import java.util.List;
@@ -17,10 +20,13 @@ public class BudgetRestController {
 
     private final BudgetService budgetService;
     private final StatistiqueBudgetService statistiqueBudgetService;
+    private final DepenseStatService depenseStatService;
 
-    public BudgetRestController(BudgetService budgetService, StatistiqueBudgetService statistiqueBudgetService) {
+    public BudgetRestController(BudgetService budgetService, StatistiqueBudgetService statistiqueBudgetService,
+    DepenseStatService depenseStatService) {
         this.budgetService = budgetService;
         this.statistiqueBudgetService = statistiqueBudgetService;
+        this.depenseStatService = depenseStatService;
     }
 
     @GetMapping("/budgets")
@@ -31,9 +37,13 @@ public class BudgetRestController {
 
 
     @GetMapping("/statistiques")
-    public ResponseEntity<List<StatistiqueBudget>> getAllStatistiques() {
+    public ResponseEntity<DashboardEntity> getAllStatistiques() {
         List<StatistiqueBudget> statistiques = statistiqueBudgetService.getAllStatistiques();
-        return ResponseEntity.ok(statistiques);
+        DepenseStat depenseStat=depenseStatService.getDepenseStats();
+        DashboardEntity dashboardEntity=new DashboardEntity();
+        dashboardEntity.setStatistiqueBudgets(statistiques);
+        dashboardEntity.setDepenseStat(depenseStat);
+        return ResponseEntity.ok(dashboardEntity);
     }
 
    

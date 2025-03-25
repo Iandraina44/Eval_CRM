@@ -179,31 +179,20 @@ public class TicketController {
         Notification notif= budgetService.checkBudget(customerId,depense);
         Depense depenseToInsert= new Depense();
         depenseToInsert.setDateDepense(notif.getDateNotification());
-        depenseToInsert.setEtat(notif.getEtat());
+        // depenseToInsert.setEtat(notif.getEtat());
+        if (notif.getEtat()==0) {
+            depenseToInsert.setEtat(0);
+        }
+        else{
+            depenseToInsert.setEtat(1);
+        }
         depenseToInsert.setTicket(ticket);
         depenseToInsert.setValeurDepense(depense);
         ticketService.save(ticket);
         Depense depense1= depenseService.saveDepense(depenseToInsert);
-        // if (depenseToInsert.getEtat()==0) {
-        //     List<User> employees = new ArrayList<>();
-        //     List<Customer> customers;
+       
+        // notif.setEtat(0);
 
-        //     if(AuthorizationUtil.hasRole(authentication, "ROLE_MANAGER")) {
-        //         employees = userService.findAll();
-        //         customers = customerService.findAll();
-        //     } else {
-        //         employees.add(manager);
-        //         customers = customerService.findByUserId(manager.getId());
-        //     }
-
-        //     model.addAttribute("employees",employees);
-        //     model.addAttribute("customers",customers);
-        //     model.addAttribute("notification", notif);
-        //     model.addAttribute("ticket", ticket);
-        //     return "ticket/create-ticket";
-
-        // }
-        notif.setEtat(0);
         notif.setIdDepense(depense1.getDepenseId());
         if (!notif.getMessage().equals("successful")){
             notificationService.save(notif);

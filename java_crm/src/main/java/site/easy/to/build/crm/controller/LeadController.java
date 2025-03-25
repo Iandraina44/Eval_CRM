@@ -229,14 +229,21 @@ public class LeadController {
 
         Lead createdLead = leadService.save(lead);
         Notification notif = budgetService.checkBudget(customerId, depense);
+        
         Depense depenseToInsert = new Depense();
         depenseToInsert.setDateDepense(notif.getDateNotification());
-        depenseToInsert.setEtat(notif.getEtat());
+        if (notif.getEtat()==0) {
+            depenseToInsert.setEtat(0);
+        }
+        else{
+            depenseToInsert.setEtat(1);
+        }
+        // depenseToInsert.setEtat(notif.getEtat());
         depenseToInsert.setLead(lead);
         depenseToInsert.setValeurDepense(depense);
         leadService.save(createdLead);
         Depense depense1= depService.saveDepense(depenseToInsert);
-        notif.setEtat(0);
+        // notif.setEtat(0);
         notif.setIdDepense(depense1.getDepenseId());
         System.out.println("notif.getMessage()" + notif.getMessage());
         if (!notif.getMessage().equals("successful")) {

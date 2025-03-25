@@ -90,7 +90,7 @@
                                             <td th:text="${notification.notificationId}"></td>
                                             <td th:text="${notification.message}"></td>
                                             <td th:text="${notification.dateNotification}"></td>
-                                            <td>
+                                            <td th:if="${notification.etat==0}">
                                                 <!-- Formulaire pour valider la notification -->
                                                 <form th:action="@{/notifications/{notificationId}/etat/1 (notificationId=${notification.notificationId})}" method="post" class="d-inline-block">
                                                     <button type="submit" class="btn btn-success">
@@ -98,12 +98,21 @@
                                                     </button>
                                                 </form>
                                                 <!-- Formulaire pour refuser la notification -->
-                                                <form th:action="@{/notifications/{notificationId}/etat/-1 (notificationId=${notification.notificationId})}" method="post" class="d-inline-block">
+                                                <form th:action="@{/notifications/{notificationId}/etat/0 (notificationId=${notification.notificationId})}" method="post" class="d-inline-block">
                                                     <button type="submit" class="btn btn-danger">
                                                         <i class="bi bi-x-circle"></i> Refuser
                                                     </button>
                                                 </form>
-                                            </td>                                                
+                                            </td>
+                                            <td th:if="${notification.etat==-1}">
+                                                <!-- Formulaire pour valider la notification -->
+                                                <form th:action="@{/notifications/{notificationId}/etat/1 (notificationId=${notification.notificationId})}" method="post" class="d-inline-block">
+                                                    <button type="submit" class="btn btn-success">
+                                                        <i class="bi bi-check-circle"></i> SEEN
+                                                    </button>
+                                                </form>
+                                            </td>
+                                                                
                                         </tr>
                                     </tbody>
                                 </table>

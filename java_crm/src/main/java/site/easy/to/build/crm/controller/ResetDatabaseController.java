@@ -16,7 +16,7 @@ public class ResetDatabaseController {
     @RequestMapping("/resetDatabase")
     public String resetDatabase() {
         configurationBaseService.truncateAllTables();
-        return "redirect:/login";
+        return "redirect:/resetPage";
     }
 
     @RequestMapping("/resetPage")

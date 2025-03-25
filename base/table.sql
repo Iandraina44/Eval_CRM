@@ -145,3 +145,13 @@ SELECT
     ROUND((COALESCE(SUM(CASE WHEN ticket_id IS NOT NULL THEN valeur_depense END), 0) / 
            COALESCE(SUM(valeur_depense), 1)) * 100, 2) AS pourcentage_ticket
 FROM depense;
+
+
+CREATE TABLE customer_request (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customer_email VARCHAR(255) NOT NULL CHECK (customer_email LIKE '%@%'),
+    subject_or_name VARCHAR(255) NOT NULL,
+    type VARCHAR(10) NOT NULL,
+    status VARCHAR(50) NOT NULL ,
+    expense DECIMAL(10,2) NOT NULL
+);

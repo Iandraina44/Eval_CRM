@@ -67,7 +67,8 @@ public class NotificationController {
         if(depense!= null){
             depense.setEtat(newEtat);
             depenseService.saveDepense(depense);
-            if (newEtat==-1) {
+            if (newEtat==0) {
+                notificationService.delete(notification);
                 depenseService.deleteDepense(depense.getDepenseId());
                 Lead lead=depense.getLead();
                 if (lead!=null) {

@@ -24,5 +24,11 @@ public class LeadDepenseController {
         return ResponseEntity.ok(leads); // 200 OK
     }
 
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<LeadDepenseDetails>> getTicketDepensesByCustomerId(@PathVariable Long customerId) {
+        List<LeadDepenseDetails> leads = leadDepenseService.getLeadDepensesByCustomerId(customerId);
+        return ResponseEntity.ok(leads); // 200 OK
+    }
+
 
 }

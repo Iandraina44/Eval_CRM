@@ -19,4 +19,9 @@ public class TicketDepenseService {
     public List<TicketDepenseDetails> getAllTicketDepenses() {
         return ticketDepenseRepository.findAll();
     }
+
+    public List<TicketDepenseDetails> getTicketDepensesByCustomerId(Long customerId) {
+        return ticketDepenseRepository.findByCustomerId(customerId);
+    }
+
 }

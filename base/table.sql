@@ -68,10 +68,13 @@ CREATE VIEW v_lead_depense AS
 SELECT 
     l.lead_id,
     l.customer_id,
+    c.name as customer_name,
     l.user_id,
+    u.username as user_name,
     l.name,
     l.phone,
     l.employee_id,
+    us.username as employee_name,
     l.status,
     l.meeting_id,
     l.google_drive,
@@ -83,7 +86,10 @@ SELECT
     d.etat,
     d.ticket_id
 FROM trigger_lead l
-LEFT JOIN depense d ON l.lead_id = d.lead_id;
+LEFT JOIN depense d ON l.lead_id = d.lead_id
+JOIN customer c on l.customer_id=c.customer_id
+JOIN users u on l.user_id=u.id
+JOIN users us on l.employee_id=us.id;
 
 CREATE VIEW v_ticket_depense AS
 SELECT 
@@ -93,8 +99,11 @@ SELECT
     t.status,
     t.priority,
     t.customer_id,
+    c.name as customer_name,
     t.manager_id,
+    u.username as manager_name,
     t.employee_id,
+    us.username as employee_name,
     t.created_at,
     d.depense_id,
     d.valeur_depense,
@@ -102,7 +111,28 @@ SELECT
     d.etat,
     d.lead_id
 FROM trigger_ticket t
-LEFT JOIN depense d ON t.ticket_id = d.ticket_id;
+LEFT JOIN depense d ON t.ticket_id = d.ticket_id
+JOIN customer c on t.customer_id=c.customer_id
+JOIN users u on t.manager_id=u.id
+JOIN users us on t.employee_id=us.id;
+
+
+
+
+-- crm.budget definition
+
+CREATE view v_budget_detail AS
+SELECT 
+    b.budget_id,
+    b.valeur,
+    b.date_budget,
+    b.customer_id,
+    c.name 
+FROM budget b JOIN
+customer c on b.customer_id=c.customer_id;
+
+
+
 
 
 CREATE VIEW v_depense_stat AS

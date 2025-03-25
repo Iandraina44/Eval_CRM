@@ -1,6 +1,8 @@
 package site.easy.to.build.crm.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,11 +12,14 @@ public class Depense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer depenseId;
 
+    
+    @DecimalMin(value = "0.01", inclusive = true, message = "La valeur de la dépense doit être supérieure à 0.00")
     @Column(name = "valeur_depense", nullable = false, precision = 10, scale = 2)
     private double valeurDepense;
 
     @Column(name = "date_depense", nullable = false)
     private LocalDateTime dateDepense;
+
 
     @Column(name = "etat", nullable = false)
     private Integer etat;

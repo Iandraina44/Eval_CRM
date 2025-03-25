@@ -59,6 +59,7 @@ public class ImportService {
                     String nomCustomer=csvRecord.get("customer_name").trim();
                     if (nomCustomer==null||nomCustomer.isEmpty()) {
                         throw new Exception("Nom du client manquant ");
+                        
                     }
                     customer.setName(nomCustomer);
                     String emailCustomer=csvRecord.get("customer_email").trim();

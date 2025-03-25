@@ -59,6 +59,7 @@ public class ImportService {
                     String nomCustomer=csvRecord.get("customer_name").trim();
                     if (nomCustomer==null||nomCustomer.isEmpty()) {
                         throw new Exception("Nom du client manquant ");
+                        
                     }
                     customer.setName(nomCustomer);
                     String emailCustomer=csvRecord.get("customer_email").trim();
@@ -164,8 +165,16 @@ public class ImportService {
                         
                          try {
                             expense = expense.replace(',', '.');
+
                             Double expensed=Double.parseDouble(expense);
+                            if (expensed<=0) {
+                                throw new Exception("valeur negative");
+                            }
+
+
                             Depense depense=new Depense();
+
+
                             depense.setLead(lead2);
                             depense.setValeurDepense(expensed);
                             depense.setDateDepense(LocalDateTime.now());
@@ -176,7 +185,7 @@ public class ImportService {
 
 
                         } catch (Exception e) {
-                            throw new Exception("Invalid expense value");
+                            throw new Exception("Invalid expense value"+e.getMessage());
 
                         }
                     }
@@ -198,6 +207,13 @@ public class ImportService {
 
                             expense = expense.replace(',', '.');
                             Double expensedo=Double.parseDouble(expense);
+
+                            
+                            if (expensedo<=0) {
+                                throw new Exception("valeur negative");
+                            }
+
+
                             Depense depense=new Depense();
                             depense.setTicket(ticket2);
                             depense.setValeurDepense(expensedo);
@@ -259,6 +275,11 @@ public class ImportService {
                     try {
                         budgetValue = budgetValue.replace(',', '.');
                         budget.setValeur(Double.parseDouble(budgetValue));
+
+                        if (Double.parseDouble(budgetValue)<=0) {
+                            throw new Exception("valeur negative");
+                        }
+
                         budget.setCustomer(customer);
                         budget.setDate(LocalDateTime.now());
                         budgetService.save(budget);

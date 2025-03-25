@@ -27,7 +27,11 @@ public class TicketDepenseController {
         return ResponseEntity.ok(tickets); // 200 OK
     }
 
-    
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<TicketDepenseDetails>> getTicketDepensesByCustomerId(@PathVariable Long customerId) {
+        List<TicketDepenseDetails> tickets = ticketDepenseService.getTicketDepensesByCustomerId(customerId);
+        return ResponseEntity.ok(tickets); // 200 OK
+    }
 
  
 }

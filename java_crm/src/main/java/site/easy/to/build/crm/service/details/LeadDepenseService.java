@@ -19,4 +19,8 @@ public class LeadDepenseService {
     public List<LeadDepenseDetails> getAllLeadDepenses() {
         return leadDepenseRepository.findAll();
     }
+
+    public List<LeadDepenseDetails> getLeadDepensesByCustomerId(Long customerId) {
+        return leadDepenseRepository.findByCustomerId(customerId);
+    }
 }

@@ -50,9 +50,11 @@ public class BudgetService {
     public void delete(int id){
         budgetRepository.deleteById(id);
     }
+    
     public List<Budget> findByCustomerId(int customerId){
         return budgetRepository.findByCustomerCustomerId(customerId);
     }
+
     public double getTotalBudgetByCustomerId(int customerId) {
         return budgetRepository.getTotalBudgetByCustomerId(customerId);
     }

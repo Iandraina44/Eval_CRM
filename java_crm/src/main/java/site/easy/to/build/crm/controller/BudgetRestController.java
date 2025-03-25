@@ -46,5 +46,15 @@ public class BudgetRestController {
         return ResponseEntity.ok(dashboardEntity);
     }
 
+
+    @GetMapping("/budgets/customer/{customerId}")
+    public ResponseEntity<List<Budget>> getBudgetsByCustomerId(@PathVariable int customerId) {
+        List<Budget> budgets = budgetService.findByCustomerId(customerId);
+        if (budgets.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(budgets);
+    }
+
    
 }

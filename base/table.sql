@@ -64,6 +64,8 @@ LEFT JOIN (
 ) d ON c.customer_id = d.customer_id
 GROUP BY c.customer_id, c.name, d.total_depense_ticket, d.total_depense_lead;
 
+
+
 CREATE VIEW v_lead_depense AS
 SELECT 
     l.lead_id,
@@ -87,9 +89,10 @@ SELECT
     d.ticket_id
 FROM trigger_lead l
 LEFT JOIN depense d ON l.lead_id = d.lead_id
-JOIN customer c on l.customer_id=c.customer_id
-JOIN users u on l.user_id=u.id
-JOIN users us on l.employee_id=us.id;
+JOIN customer c on l.customer_id = c.customer_id
+JOIN users u on l.user_id = u.id
+JOIN users us on l.employee_id = us.id
+WHERE d.etat != 0;
 
 CREATE VIEW v_ticket_depense AS
 SELECT 
@@ -112,9 +115,10 @@ SELECT
     d.lead_id
 FROM trigger_ticket t
 LEFT JOIN depense d ON t.ticket_id = d.ticket_id
-JOIN customer c on t.customer_id=c.customer_id
-JOIN users u on t.manager_id=u.id
-JOIN users us on t.employee_id=us.id;
+JOIN customer c on t.customer_id = c.customer_id
+JOIN users u on t.manager_id = u.id
+JOIN users us on t.employee_id = us.id
+WHERE d.etat != 0;
 
 
 
@@ -137,6 +141,7 @@ customer c on b.customer_id=c.customer_id;
 
 CREATE VIEW v_depense_stat AS
 SELECT 
+    1 as id,
     COALESCE(SUM(CASE WHEN lead_id IS NOT NULL THEN valeur_depense END), 0) AS total_lead_depense,
     COALESCE(SUM(CASE WHEN ticket_id IS NOT NULL THEN valeur_depense END), 0) AS total_ticket_depense,
     COALESCE(SUM(valeur_depense), 0) AS total_depense,
